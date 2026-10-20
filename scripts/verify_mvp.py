@@ -23,6 +23,15 @@ REPO = Path(__file__).resolve().parents[1]
 EXAMPLES = REPO / "examples"
 sys.path.insert(0, str(REPO / "src"))
 
+# Print our own findings as UTF-8 with replacement, like scripts/spike_process.py does.
+# GitHub's windows-latest runner pipes stdout through cp1252, where the Chinese criterion
+# names would raise UnicodeEncodeError and kill the audit before it reports anything.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except (OSError, ValueError):
+        pass
+
 CONSOLE = Path(sys.executable).parent / ("labbox.exe" if os.name == "nt" else "labbox")
 SHIM = REPO / "scripts" / "labbox_dev.py"
 
