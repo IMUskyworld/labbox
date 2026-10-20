@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+pyright-output/
+
+# LabBox own runtime data (LabBox also writes this on `labbox init`)
+.labbox/runs/
+.labbox/*.tmp
+
+# Spike run artifacts (scripts/spike_process.py)
+scripts/.spike/
+
+# Editors / OS
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store

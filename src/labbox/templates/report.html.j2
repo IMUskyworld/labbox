@@ -1,0 +1,214 @@
+{#-
+  LabBox report template (DEVELOPMENT.md section 13).
+
+  Two rules govern everything below:
+  * No external reference of any kind. No script, no remote font, no image, no
+    stylesheet import, no frame, no link element. Charts arrive already built as inline
+    SVG from labbox/report/html.py, so no JavaScript is needed to read this page.
+  * Autoescape stays on and is never bypassed. The only values that are markup are the
+    badges and the chart, and those are constructed in Python from escaped text.
+
+  Sections are a flat list of typed content blocks, so this file only ever needs one
+  dispatch loop; new report content is added in Python, not here.
+-#}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title>
+<meta name="generator" content="LabBox {{ labbox_version }}">
+<meta name="color-scheme" content="light">
+<style>
+:root {
+  --ink: #1f2328;
+  --ink-soft: #57606a;
+  --line: #d0d7de;
+  --line-soft: #eaeef2;
+  --paper: #ffffff;
+  --band: #f6f8fa;
+  --ok: #1a7f37;
+  --ok-bg: #dafbe1;
+  --warn: #7d4e00;
+  --warn-bg: #fff8c5;
+  --error: #cf222e;
+  --error-bg: #ffebe9;
+  --missing: #57606a;
+  --missing-bg: #eaeef2;
+  --ai: #8250df;
+  --ai-bg: #faf5ff;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 4rem;
+  max-width: 62rem;
+  background: var(--paper);
+  color: var(--ink);
+  font: 15px/1.55 ui-sans-serif, system-ui, "Segoe UI", "Segoe UI Variable", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+}
+h1 { font-size: 1.5rem; margin: 0 0 .25rem; line-height: 1.25; word-break: break-word; }
+h2 { font-size: 1.15rem; margin: 0 0 .6rem; padding-bottom: .25rem; border-bottom: 2px solid var(--line); }
+h3.sub { font-size: .95rem; margin: 1.4rem 0 .4rem; color: var(--ink-soft); text-transform: uppercase;
+  letter-spacing: .04em; }
+p { margin: .5rem 0; }
+code, pre, .tok { font-family: ui-monospace, "Cascadia Mono", Consolas, "Liberation Mono", Menlo, monospace; }
+code { background: var(--band); border: 1px solid var(--line-soft); border-radius: 4px;
+  padding: 0 .25em; word-break: break-all; font-size: .92em; }
+header.doc { border-bottom: 3px solid var(--ink); padding-bottom: .8rem; margin-bottom: 1.4rem; }
+header.doc .meta { color: var(--ink-soft); font-size: .9rem; margin: .15rem 0; }
+.badge, .state {
+  display: inline-block; padding: .05rem .45rem; border-radius: 999px;
+  border: 1px solid currentColor; font-size: .82em; line-height: 1.5; white-space: nowrap;
+}
+.badge.b-ok, .state.s-ok { color: var(--ok); background: var(--ok-bg); border-color: #4ac26b; }
+.badge.b-warn, .state.s-warn { color: var(--warn); background: var(--warn-bg); border-color: #d4a72c; }
+.badge.b-error, .state.s-error { color: var(--error); background: var(--error-bg); border-color: #ff8182; }
+.badge.b-missing, .state.s-missing { color: var(--missing); background: var(--missing-bg);
+  border-color: var(--missing); border-style: dashed; }
+.badge.b-neutral, .state.s-neutral { color: var(--ink-soft); background: var(--band); border-color: var(--line); }
+section { margin: 0 0 2.2rem; }
+section.st-not_captured { background: repeating-linear-gradient(135deg, #fbfcfd, #fbfcfd 10px, #f4f6f8 10px, #f4f6f8 20px);
+  border: 1px dashed var(--missing); border-radius: 6px; padding: .9rem 1rem; }
+section.st-unavailable { border: 1px solid var(--error); border-left-width: 4px; border-radius: 6px;
+  padding: .9rem 1rem; background: #fffafa; }
+.banner { padding: .5rem .75rem; border-radius: 6px; border: 1px solid var(--line);
+  border-left-width: 4px; font-weight: 600; margin: .6rem 0; }
+.banner.warn { background: var(--warn-bg); border-left-color: #bf8700; }
+.banner.error { background: var(--error-bg); border-left-color: var(--error); }
+.banner.ok { background: var(--ok-bg); border-left-color: var(--ok); }
+.banner.missing { background: var(--missing-bg); border-left-color: var(--missing); border-style: dashed; }
+.banner.ai { background: var(--ai-bg); border-left-color: var(--ai); }
+.note { color: var(--ink-soft); font-size: .88rem; border-left: 3px solid var(--line);
+  padding-left: .6rem; margin: .5rem 0; }
+.para { white-space: pre-wrap; word-break: break-word; }
+.score { font-size: .8rem; color: var(--ink-soft); margin: .3rem 0; }
+.secondary { font-size: .8rem; color: var(--ink-soft); }
+table { border-collapse: collapse; width: 100%; margin: .4rem 0 .8rem; font-size: .9rem; }
+table caption { text-align: left; color: var(--ink-soft); font-size: .82rem; padding-bottom: .2rem; }
+th, td { border: 1px solid var(--line-soft); padding: .28rem .45rem; text-align: left;
+  vertical-align: top; word-break: break-word; }
+thead th { background: var(--band); border-bottom: 2px solid var(--line); font-weight: 600; }
+table.kv { table-layout: fixed; }
+table.kv th { width: 30%; background: var(--band); font-weight: 600; }
+table.kv tr:first-child th, table.kv tr:first-child td { border-top: 1px solid var(--line-soft); }
+tbody tr:nth-child(even) td, tbody tr:nth-child(even) th { background: #fcfdfe; }
+ul.items { margin: .35rem 0 .6rem; padding-left: 1.2rem; }
+ul.items li { margin: .12rem 0; word-break: break-word; }
+p.chips, div.tokens { display: flex; flex-wrap: wrap; gap: .3rem; align-items: baseline; margin: .35rem 0; }
+.tok { background: var(--band); border: 1px solid var(--line); border-radius: 4px;
+  padding: .05rem .35rem; font-size: .88rem; word-break: break-all; }
+.empty { color: var(--ink-soft); font-style: italic; }
+.more { color: var(--ink-soft); font-size: .82rem; }
+figure.chart { margin: .8rem 0 1rem; }
+svg.chart { display: block; width: 100%; height: auto; border: 1px solid var(--line);
+  background: var(--paper); }
+svg.chart text { font-family: ui-sans-serif, system-ui, "Segoe UI", Arial, sans-serif; }
+svg.chart .tick { font-size: 11px; fill: var(--ink-soft); }
+svg.chart .axis { font-size: 11px; fill: var(--ink); font-weight: 600; }
+figcaption { color: var(--ink-soft); font-size: .84rem; margin-top: .35rem; }
+ul.legend { list-style: none; display: flex; flex-wrap: wrap; gap: .8rem; padding: 0; margin: .4rem 0; }
+ul.legend li { font-size: .85rem; color: var(--ink-soft); }
+.sw { display: inline-block; width: 1.1rem; height: .35rem; margin-right: .3rem;
+  border: 1px solid var(--line); vertical-align: middle; }
+.sw.dashed { background-image: none; border-top: 3px dashed currentColor; height: 0; }
+footer.doc { margin-top: 2.5rem; padding-top: 1rem; border-top: 2px solid var(--line);
+  color: var(--ink-soft); font-size: .85rem; }
+@media print {
+  body { max-width: none; padding: 0; font-size: 10.5pt; }
+  section { break-inside: avoid; page-break-inside: avoid; }
+  table, pre { break-inside: avoid; }
+  h2 { break-after: avoid; }
+  .banner, section.st-not_captured, section.st-unavailable { background: #fff; }
+  a { color: inherit; text-decoration: none; }
+}
+</style>
+</head>
+<body>
+<header class="doc">
+<h1>{{ run_name }}</h1>
+<p class="meta">Run <code>{{ run_id }}</code> &middot; project {{ run_project }}</p>
+<p class="meta">Status <span class="badge b-{{ status_kind }}">{{ status }}</span>
+  &middot; report generated {{ generated_at }} &middot; LabBox {{ labbox_version }}</p>
+<p class="meta">This page is a read-only snapshot: one self-contained file, no JavaScript, no
+  network resource, no remote font. It is meant to still open, print and diff years from now.</p>
+</header>
+
+{% for section in sections %}
+{% if section.state == "unavailable" %}<!-- labbox report: section {{ section.key }} unavailable -->{% endif %}
+<section class="st-{{ section.key }} st-{{ section.state }}" id="sec-{{ section.key }}">
+<h2>{{ section.title }}
+  {%- if section.state != "ok" %}
+  <span class="state s-{% if section.state == "not_captured" %}missing{% elif section.state == "unavailable" %}error{% else %}warn{% endif %}">
+    {%- if section.state == "not_captured" %}not captured{% elif section.state == "unavailable" %}unreadable{% else %}with gaps{% endif -%}
+  </span>
+  {%- endif %}
+  {%- if section.source %}<span class="secondary">from {{ section.source }}</span>{% endif %}
+</h2>
+{% if section.note %}<p class="secondary">{{ section.note }}</p>{% endif %}
+{% for block in section.blocks %}
+{% if block.kind == "banner" %}
+<p class="banner {{ block.cls }}">{{ block.text }}</p>
+{% elif block.kind == "note" %}
+<p class="note">{{ block.text }}</p>
+{% elif block.kind == "para" %}
+<p class="para">{{ block.text }}</p>
+{% elif block.kind == "sub" %}
+<h3 class="sub">{{ block.text }}</h3>
+{% elif block.kind == "score" %}
+<p class="score secondary">{{ block.text }}</p>
+{% elif block.kind == "kv" %}
+<table class="kv"><tbody>
+{% for row in block.rows %}<tr><th>{{ row[0] }}</th><td>{{ row[1] }}</td></tr>
+{% endfor %}</tbody></table>
+{% elif block.kind == "table" %}
+<table class="grid">
+{% if block.caption %}<caption>{{ block.caption }}</caption>{% endif %}
+<thead><tr>{% for head in block.head %}<th>{{ head }}</th>{% endfor %}</tr></thead>
+<tbody>
+{% for row in block.rows %}<tr>{% for cell in row %}<td>{{ cell }}</td>{% endfor %}</tr>
+{% endfor %}</tbody></table>
+{% if block.more %}<p class="more">{{ block.more }}</p>{% endif %}
+{% elif block.kind == "list" %}
+{% if block.empty %}<p class="empty">nothing listed</p>{% else %}
+<ul class="items">{% for item in block["items"] %}<li>{{ item }}</li>{% endfor %}</ul>
+{% endif %}
+{% if block.more %}<p class="more">{{ block.more }}</p>{% endif %}
+{% elif block.kind == "chips" %}
+{% if block.empty %}<p class="empty">nothing recorded</p>{% else %}
+<p class="chips">{% for chip in block["items"] %}{{ chip }} {% endfor %}</p>
+{% endif %}
+{% if block.more %}<p class="more">{{ block.more }}</p>{% endif %}
+{% elif block.kind == "tokens" %}
+{% if block.empty %}<p class="empty">the argv list is empty</p>{% else %}
+<div class="tokens">{% for token in block["items"] %}<code class="tok">{{ token }}</code>{% endfor %}</div>
+{% endif %}
+{% if block.more %}<p class="more">{{ block.more }}</p>{% endif %}
+{% elif block.kind == "chart" %}
+<figure class="chart">
+{{ block.svg }}
+<ul class="legend">
+{% for item in block.legend %}<li><span class="sw{% if item.style == "dashed" %} dashed{% endif %}"
+  style="background:{% if item.style == "dashed" %}transparent{% else %}{{ item.color }}{% endif %};color:{{ item.color }}"></span>{{ item.label }}{% if item.style == "dashed" %} (dashed){% endif %}</li>
+{% endfor %}</ul>
+<figcaption>{{ block.caption }}</figcaption>
+</figure>
+{% else %}
+<p class="note">The report renderer produced an unknown content block; the recorded data is
+  unchanged and still readable in the source file named above.</p>
+{% endif %}
+{% endfor %}
+</section>
+{% endfor %}
+
+<footer class="doc">
+<p>End of report. Sections reporting "not captured" state that data was never recorded; sections
+  reporting "unreadable" state that a file exists but could not be parsed. Neither is rendered as
+  an empty space, because an empty space reads as "no problem found".</p>
+<p class="secondary">LabBox {{ labbox_version }} &middot; {{ generated_at }} &middot; run directory
+  {{ run_dir }}</p>
+</footer>
+</body>
+</html>

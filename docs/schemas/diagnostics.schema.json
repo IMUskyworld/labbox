@@ -1,0 +1,200 @@
+{
+  "$defs": {
+    "Diagnostic": {
+      "properties": {
+        "code": {
+          "default": "",
+          "title": "Code",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Fact Ids",
+          "type": "array"
+        },
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "message": {
+          "default": "",
+          "title": "Message",
+          "type": "string"
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity",
+          "default": "info"
+        },
+        "suggestion": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suggestion"
+        }
+      },
+      "title": "Diagnostic",
+      "type": "object"
+    },
+    "ReproBand": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "title": "ReproBand",
+      "type": "string"
+    },
+    "ReproCheck": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/ReproState",
+          "default": "unknown"
+        },
+        "weight": {
+          "default": 0,
+          "title": "Weight",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ReproCheck",
+      "type": "object"
+    },
+    "ReproState": {
+      "enum": [
+        "ok",
+        "partial",
+        "missing",
+        "unknown"
+      ],
+      "title": "ReproState",
+      "type": "string"
+    },
+    "Reproducibility": {
+      "description": "Checklist first, number second (§12.1).",
+      "properties": {
+        "band": {
+          "$ref": "#/$defs/ReproBand",
+          "default": "low"
+        },
+        "checklist": {
+          "items": {
+            "$ref": "#/$defs/ReproCheck"
+          },
+          "title": "Checklist",
+          "type": "array"
+        },
+        "rules_version": {
+          "default": "1",
+          "title": "Rules Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score": {
+          "default": 0,
+          "title": "Score",
+          "type": "integer"
+        }
+      },
+      "title": "Reproducibility",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "critical",
+        "high",
+        "warning",
+        "info"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "diagnostics": {
+      "items": {
+        "$ref": "#/$defs/Diagnostic"
+      },
+      "title": "Diagnostics",
+      "type": "array"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "reproducibility": {
+      "$ref": "#/$defs/Reproducibility"
+    },
+    "rules_version": {
+      "default": "1",
+      "title": "Rules Version",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "generated_at"
+  ],
+  "title": "DiagnosticsFile",
+  "type": "object",
+  "x-labbox-document": "diagnostics.json"
+}

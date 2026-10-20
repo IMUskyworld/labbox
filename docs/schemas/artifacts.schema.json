@@ -1,0 +1,200 @@
+{
+  "$defs": {
+    "ArtifactEntry": {
+      "properties": {
+        "abs_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Abs Path"
+        },
+        "archived": {
+          "default": false,
+          "title": "Archived",
+          "type": "boolean"
+        },
+        "discovered_by": {
+          "default": "config_glob",
+          "title": "Discovered By",
+          "type": "string"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Error"
+        },
+        "hash_bytes_read": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Hash Bytes Read"
+        },
+        "hash_state": {
+          "$ref": "#/$defs/HashState",
+          "default": "not_computed"
+        },
+        "kind": {
+          "$ref": "#/$defs/ArtifactKind",
+          "default": "other"
+        },
+        "mtime": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mtime"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        },
+        "size_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Size Bytes"
+        },
+        "storage_uri": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Storage Uri"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "ArtifactEntry",
+      "type": "object"
+    },
+    "ArtifactKind": {
+      "enum": [
+        "checkpoint",
+        "log",
+        "config",
+        "metrics",
+        "image",
+        "other"
+      ],
+      "title": "ArtifactKind",
+      "type": "string"
+    },
+    "HashState": {
+      "enum": [
+        "not_computed",
+        "computed",
+        "deferred_too_large",
+        "failed",
+        "skipped_disabled"
+      ],
+      "title": "HashState",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "artifacts": {
+      "items": {
+        "$ref": "#/$defs/ArtifactEntry"
+      },
+      "title": "Artifacts",
+      "type": "array"
+    },
+    "copied": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Copied",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "hash_threshold_bytes": {
+      "default": 2147483648,
+      "title": "Hash Threshold Bytes",
+      "type": "integer"
+    },
+    "scanned_globs": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Scanned Globs",
+      "type": "array"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "title": "ArtifactManifest",
+  "type": "object",
+  "x-labbox-document": "artifacts.json"
+}

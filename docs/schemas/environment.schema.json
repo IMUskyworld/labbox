@@ -1,0 +1,982 @@
+{
+  "$defs": {
+    "Collected_Union_bool__NoneType__": {
+      "properties": {
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "duration_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Ms"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CollectorStatus",
+          "default": "ok"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "title": "Collected[Union[bool, NoneType]]",
+      "type": "object"
+    },
+    "Collected_Union_int__NoneType__": {
+      "properties": {
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "duration_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Ms"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CollectorStatus",
+          "default": "ok"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "title": "Collected[Union[int, NoneType]]",
+      "type": "object"
+    },
+    "Collected_dict_str__Any__": {
+      "properties": {
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "duration_ms": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Duration Ms"
+        },
+        "error": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ErrorInfo"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/CollectorStatus",
+          "default": "ok"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        }
+      },
+      "title": "Collected[dict[str, Any]]",
+      "type": "object"
+    },
+    "CollectorStatus": {
+      "enum": [
+        "ok",
+        "partial",
+        "unavailable",
+        "timeout",
+        "failed",
+        "skipped",
+        "disabled"
+      ],
+      "title": "CollectorStatus",
+      "type": "string"
+    },
+    "CudaInfo": {
+      "properties": {
+        "cudnn": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cudnn"
+        },
+        "driver": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Driver"
+        },
+        "nvml": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Nvml"
+        },
+        "runtime": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Runtime"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "toolkit_env": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Toolkit Env"
+        }
+      },
+      "title": "CudaInfo",
+      "type": "object"
+    },
+    "EnvVars": {
+      "description": "Sanitized environment snapshot. Never stores unredacted values.",
+      "properties": {
+        "entries": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Entries",
+          "type": "object"
+        },
+        "redact_patterns": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Redact Patterns",
+          "type": "array"
+        },
+        "redacted_names": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Redacted Names",
+          "type": "array"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "total_count": {
+          "default": 0,
+          "title": "Total Count",
+          "type": "integer"
+        }
+      },
+      "title": "EnvVars",
+      "type": "object"
+    },
+    "ErrorInfo": {
+      "description": "The structured error shape from DEVELOPMENT.md §19.",
+      "properties": {
+        "code": {
+          "default": "UNKNOWN_ERROR",
+          "title": "Code",
+          "type": "string"
+        },
+        "component": {
+          "default": "core",
+          "title": "Component",
+          "type": "string"
+        },
+        "details": {
+          "additionalProperties": true,
+          "title": "Details",
+          "type": "object"
+        },
+        "message": {
+          "default": "",
+          "title": "Message",
+          "type": "string"
+        },
+        "recoverable": {
+          "default": true,
+          "title": "Recoverable",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "title": "ErrorInfo",
+      "type": "object"
+    },
+    "GitState": {
+      "properties": {
+        "ahead": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ahead"
+        },
+        "branch": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Branch"
+        },
+        "commit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Commit"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "diff_hash": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Diff Hash"
+        },
+        "dirty": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dirty"
+        },
+        "git_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Git Version"
+        },
+        "has_repo": {
+          "default": false,
+          "title": "Has Repo",
+          "type": "boolean"
+        },
+        "modified_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Modified Count"
+        },
+        "remote_origin": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Remote Origin"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "short_commit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Short Commit"
+        },
+        "untracked_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Untracked Count"
+        }
+      },
+      "title": "GitState",
+      "type": "object"
+    },
+    "GpuInfo": {
+      "properties": {
+        "compute_capability": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Compute Capability"
+        },
+        "driver": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Driver"
+        },
+        "index": {
+          "title": "Index",
+          "type": "integer"
+        },
+        "name": {
+          "title": "Name",
+          "type": "string"
+        },
+        "pci_bus_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Pci Bus Id"
+        },
+        "persistence_mode": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Persistence Mode"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "uuid": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Uuid"
+        },
+        "vram_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vram Bytes"
+        },
+        "vram_used_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Vram Used Bytes"
+        }
+      },
+      "required": [
+        "index",
+        "name"
+      ],
+      "title": "GpuInfo",
+      "type": "object"
+    },
+    "HostInfo": {
+      "properties": {
+        "cpu_model": {
+          "default": "",
+          "title": "Cpu Model",
+          "type": "string"
+        },
+        "load_avg": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Load Avg"
+        },
+        "logical_cores": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Logical Cores"
+        },
+        "physical_cores": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Physical Cores"
+        },
+        "ram_available_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ram Available Bytes"
+        },
+        "ram_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Ram Bytes"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        }
+      },
+      "title": "HostInfo",
+      "type": "object"
+    },
+    "OsInfo": {
+      "properties": {
+        "arch": {
+          "default": "",
+          "title": "Arch",
+          "type": "string"
+        },
+        "console_encoding": {
+          "default": "",
+          "title": "Console Encoding",
+          "type": "string"
+        },
+        "fs_encoding": {
+          "default": "",
+          "title": "Fs Encoding",
+          "type": "string"
+        },
+        "name": {
+          "default": "",
+          "title": "Name",
+          "type": "string"
+        },
+        "platform": {
+          "default": "",
+          "title": "Platform",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "timezone": {
+          "default": "",
+          "title": "Timezone",
+          "type": "string"
+        },
+        "user": {
+          "default": "",
+          "title": "User",
+          "type": "string"
+        },
+        "version": {
+          "default": "",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "OsInfo",
+      "type": "object"
+    },
+    "PythonInfo": {
+      "description": "Which interpreter the *training* command uses.\n\n``kind`` is the important flag: LabBox runs in its own environment (§14.3), so the\ntraining interpreter is probed by a read-only subprocess. ``kind=\"external\"`` means\nthe command was not a Python interpreter at all, so package versions are unknown.",
+      "properties": {
+        "base_executable": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Base Executable"
+        },
+        "executable": {
+          "default": "",
+          "title": "Executable",
+          "type": "string"
+        },
+        "implementation": {
+          "default": "CPython",
+          "title": "Implementation",
+          "type": "string"
+        },
+        "kind": {
+          "default": "probe_target",
+          "title": "Kind",
+          "type": "string"
+        },
+        "probe_returncode": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Probe Returncode"
+        },
+        "probe_stderr_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Probe Stderr Digest"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "venv_prefix": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Venv Prefix"
+        },
+        "version": {
+          "default": "",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "title": "PythonInfo",
+      "type": "object"
+    },
+    "Seeds": {
+      "description": "Randomness settings, each explicitly known or unknown.\n\n``deterministic_algorithms`` unknown is not the same as it being false: the first is\n\"we did not look\", the second is a real fact the rules can flag.",
+      "properties": {
+        "benchmark_disabled": {
+          "$ref": "#/$defs/Collected_Union_bool__NoneType__"
+        },
+        "cuda_deterministic": {
+          "$ref": "#/$defs/Collected_Union_bool__NoneType__"
+        },
+        "declared_in_command": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Declared In Command",
+          "type": "object"
+        },
+        "numpy_seed": {
+          "$ref": "#/$defs/Collected_Union_int__NoneType__"
+        },
+        "python_hash_seed": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Python Hash Seed"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "sources": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "torch_seed": {
+          "$ref": "#/$defs/Collected_Union_int__NoneType__"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        }
+      },
+      "title": "Seeds",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "absent": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Absent",
+      "type": "array"
+    },
+    "capture_phase": {
+      "default": "pre_run",
+      "title": "Capture Phase",
+      "type": "string"
+    },
+    "captured_at": {
+      "format": "date-time",
+      "title": "Captured At",
+      "type": "string"
+    },
+    "collectors": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Collectors",
+      "type": "object"
+    },
+    "cuda": {
+      "$ref": "#/$defs/CudaInfo"
+    },
+    "env": {
+      "$ref": "#/$defs/EnvVars"
+    },
+    "errors": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "frameworks": {
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "title": "Frameworks",
+      "type": "object"
+    },
+    "git": {
+      "$ref": "#/$defs/GitState"
+    },
+    "gpus": {
+      "items": {
+        "$ref": "#/$defs/GpuInfo"
+      },
+      "title": "Gpus",
+      "type": "array"
+    },
+    "host": {
+      "$ref": "#/$defs/HostInfo"
+    },
+    "interpreter_probe": {
+      "$ref": "#/$defs/Collected_dict_str__Any__"
+    },
+    "os": {
+      "$ref": "#/$defs/OsInfo"
+    },
+    "package_source": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Package Source"
+    },
+    "packages": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "title": "Packages",
+      "type": "object"
+    },
+    "python": {
+      "$ref": "#/$defs/PythonInfo"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "seeds": {
+      "$ref": "#/$defs/Seeds"
+    }
+  },
+  "required": [
+    "captured_at"
+  ],
+  "title": "EnvironmentSnapshot",
+  "type": "object",
+  "x-labbox-document": "environment.json"
+}

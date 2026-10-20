@@ -1,0 +1,45 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  quality:
+    name: windows / py${{ matrix.python }}
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install
+        run: uv sync --extra dev --python ${{ matrix.python }}
+
+      - name: Lint (ruff)
+        run: uv run ruff check src tests scripts examples
+
+      - name: Format check (ruff)
+        run: uv run ruff format --check src
+
+      - name: Types (pyright, library code only)
+        run: uv run pyright
+
+      - name: Tests
+        run: uv run pytest -q -m "not gpu"
+
+      # The MVP contract: a recorded run must behave like the bare command.
+      - name: MVP audit (§21)
+        run: uv run python scripts/verify_mvp.py
+
+# Real-GPU validation is manual on a Windows machine with an NVIDIA driver:
+#   pytest -q -m gpu
+# It is not a hosted-runner job because GitHub's runners have no GPU.

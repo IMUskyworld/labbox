@@ -1,0 +1,307 @@
+{
+  "$defs": {
+    "DatasetEntry": {
+      "properties": {
+        "cancellation_reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cancellation Reason"
+        },
+        "declared_by_user": {
+          "default": false,
+          "title": "Declared By User",
+          "type": "boolean"
+        },
+        "digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Digest"
+        },
+        "digest_inputs": {
+          "default": "rel_path+size+head64+tail64",
+          "title": "Digest Inputs",
+          "type": "string"
+        },
+        "elapsed_seconds": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Elapsed Seconds"
+        },
+        "entries": {
+          "items": {
+            "$ref": "#/$defs/FileEntry"
+          },
+          "title": "Entries",
+          "type": "array"
+        },
+        "errors": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Errors",
+          "type": "array"
+        },
+        "exclusions": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Exclusions",
+          "type": "array"
+        },
+        "external_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "External Version"
+        },
+        "file_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "File Count"
+        },
+        "generated_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Generated At"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/DatasetKind",
+          "default": "filesystem"
+        },
+        "sampled_only": {
+          "default": true,
+          "title": "Sampled Only",
+          "type": "boolean"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "source": {
+          "title": "Source",
+          "type": "string"
+        },
+        "strategy": {
+          "$ref": "#/$defs/DatasetStrategy",
+          "default": "fast_manifest"
+        },
+        "total_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Total Bytes"
+        },
+        "touched_files": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Touched Files",
+          "type": "array"
+        },
+        "truncated": {
+          "default": false,
+          "title": "Truncated",
+          "type": "boolean"
+        },
+        "verified": {
+          "default": false,
+          "title": "Verified",
+          "type": "boolean"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
+          "type": "array"
+        },
+        "zero_byte_files": {
+          "default": 0,
+          "title": "Zero Byte Files",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "source"
+      ],
+      "title": "DatasetEntry",
+      "type": "object"
+    },
+    "DatasetKind": {
+      "enum": [
+        "filesystem",
+        "external",
+        "declared"
+      ],
+      "title": "DatasetKind",
+      "type": "string"
+    },
+    "DatasetStrategy": {
+      "enum": [
+        "fast_manifest",
+        "full_content",
+        "external_version",
+        "declared"
+      ],
+      "title": "DatasetStrategy",
+      "type": "string"
+    },
+    "FileEntry": {
+      "properties": {
+        "content_full": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Content Full"
+        },
+        "head_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Head Digest"
+        },
+        "mtime": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Mtime"
+        },
+        "path": {
+          "title": "Path",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "size_bytes": {
+          "title": "Size Bytes",
+          "type": "integer"
+        },
+        "tail_digest": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tail Digest"
+        }
+      },
+      "required": [
+        "path",
+        "size_bytes"
+      ],
+      "title": "FileEntry",
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "datasets": {
+      "items": {
+        "$ref": "#/$defs/DatasetEntry"
+      },
+      "title": "Datasets",
+      "type": "array"
+    },
+    "discovery": {
+      "default": "declared",
+      "title": "Discovery",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "title": "DatasetManifest",
+  "type": "object",
+  "x-labbox-document": "dataset-manifest.json"
+}

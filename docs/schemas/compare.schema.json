@@ -1,0 +1,443 @@
+{
+  "$defs": {
+    "Diagnostic": {
+      "properties": {
+        "code": {
+          "default": "",
+          "title": "Code",
+          "type": "string"
+        },
+        "evidence": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "fact_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Fact Ids",
+          "type": "array"
+        },
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "message": {
+          "default": "",
+          "title": "Message",
+          "type": "string"
+        },
+        "rule": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity",
+          "default": "info"
+        },
+        "suggestion": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Suggestion"
+        }
+      },
+      "title": "Diagnostic",
+      "type": "object"
+    },
+    "DiffFact": {
+      "properties": {
+        "category": {
+          "default": "other",
+          "title": "Category",
+          "type": "string"
+        },
+        "comparable": {
+          "default": true,
+          "title": "Comparable",
+          "type": "boolean"
+        },
+        "confidence": {
+          "default": "high",
+          "title": "Confidence",
+          "type": "string"
+        },
+        "delta": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Delta"
+        },
+        "delta_repr": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Delta Repr"
+        },
+        "id": {
+          "default": "",
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/DiffKind",
+          "default": "changed"
+        },
+        "left": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Left"
+        },
+        "left_repr": {
+          "default": "",
+          "title": "Left Repr",
+          "type": "string"
+        },
+        "path": {
+          "default": "",
+          "title": "Path",
+          "type": "string"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "right": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Right"
+        },
+        "right_repr": {
+          "default": "",
+          "title": "Right Repr",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "severity": {
+          "$ref": "#/$defs/Severity",
+          "default": "info"
+        },
+        "sources": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Sources",
+          "type": "array"
+        },
+        "unknown_side": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Unknown Side"
+        }
+      },
+      "title": "DiffFact",
+      "type": "object"
+    },
+    "DiffKind": {
+      "enum": [
+        "changed",
+        "added",
+        "removed",
+        "numeric_delta",
+        "metric_delta",
+        "unknown",
+        "incomparable",
+        "equal"
+      ],
+      "title": "DiffKind",
+      "type": "string"
+    },
+    "ReproBand": {
+      "enum": [
+        "high",
+        "medium",
+        "low"
+      ],
+      "title": "ReproBand",
+      "type": "string"
+    },
+    "ReproCheck": {
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "reason": {
+          "default": "",
+          "title": "Reason",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "state": {
+          "$ref": "#/$defs/ReproState",
+          "default": "unknown"
+        },
+        "weight": {
+          "default": 0,
+          "title": "Weight",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ReproCheck",
+      "type": "object"
+    },
+    "ReproState": {
+      "enum": [
+        "ok",
+        "partial",
+        "missing",
+        "unknown"
+      ],
+      "title": "ReproState",
+      "type": "string"
+    },
+    "Reproducibility": {
+      "description": "Checklist first, number second (§12.1).",
+      "properties": {
+        "band": {
+          "$ref": "#/$defs/ReproBand",
+          "default": "low"
+        },
+        "checklist": {
+          "items": {
+            "$ref": "#/$defs/ReproCheck"
+          },
+          "title": "Checklist",
+          "type": "array"
+        },
+        "rules_version": {
+          "default": "1",
+          "title": "Rules Version",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "score": {
+          "default": 0,
+          "title": "Score",
+          "type": "integer"
+        }
+      },
+      "title": "Reproducibility",
+      "type": "object"
+    },
+    "Severity": {
+      "enum": [
+        "critical",
+        "high",
+        "warning",
+        "info"
+      ],
+      "title": "Severity",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "What ``labbox compare`` renders and ``explain`` consumes.",
+  "properties": {
+    "confounders": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Confounders",
+      "type": "array"
+    },
+    "diagnostics": {
+      "items": {
+        "$ref": "#/$defs/Diagnostic"
+      },
+      "title": "Diagnostics",
+      "type": "array"
+    },
+    "facts": {
+      "items": {
+        "$ref": "#/$defs/DiffFact"
+      },
+      "title": "Facts",
+      "type": "array"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "title": "Generated At",
+      "type": "string"
+    },
+    "incomparable": {
+      "default": false,
+      "title": "Incomparable",
+      "type": "boolean"
+    },
+    "left_name": {
+      "default": "",
+      "title": "Left Name",
+      "type": "string"
+    },
+    "left_run_id": {
+      "title": "Left Run Id",
+      "type": "string"
+    },
+    "metric_deltas": {
+      "items": {
+        "$ref": "#/$defs/DiffFact"
+      },
+      "title": "Metric Deltas",
+      "type": "array"
+    },
+    "metrics_missing": {
+      "default": false,
+      "title": "Metrics Missing",
+      "type": "boolean"
+    },
+    "reproducibility": {
+      "anyOf": [
+        {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/Reproducibility"
+            },
+            {
+              "$ref": "#/$defs/Reproducibility"
+            }
+          ],
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Reproducibility"
+    },
+    "right_name": {
+      "default": "",
+      "title": "Right Name",
+      "type": "string"
+    },
+    "right_run_id": {
+      "title": "Right Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "unchanged": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unchanged",
+      "type": "array"
+    },
+    "unknown_count": {
+      "default": 0,
+      "title": "Unknown Count",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "left_run_id",
+    "right_run_id",
+    "generated_at"
+  ],
+  "title": "CompareResult",
+  "type": "object",
+  "x-labbox-document": "compare.json"
+}

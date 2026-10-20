@@ -1,0 +1,189 @@
+{
+  "$defs": {
+    "BestMetric": {
+      "properties": {
+        "epoch": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Epoch"
+        },
+        "schema_version": {
+          "default": "1.0",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "step": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Step"
+        },
+        "timestamp": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timestamp"
+        },
+        "value": {
+          "title": "Value",
+          "type": "number"
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "title": "BestMetric",
+      "type": "object"
+    },
+    "MetricDirection": {
+      "enum": [
+        "maximize",
+        "minimize",
+        "unknown"
+      ],
+      "title": "MetricDirection",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Aggregated metrics for one run.\n\nA missing metric file must produce ``metrics_missing=True`` with ``final=None``, never\nan empty dict and never a guessed number (DEVELOPMENT.md §9.4).",
+  "properties": {
+    "best": {
+      "additionalProperties": {
+        "$ref": "#/$defs/BestMetric"
+      },
+      "title": "Best",
+      "type": "object"
+    },
+    "direction": {
+      "$ref": "#/$defs/MetricDirection",
+      "default": "unknown"
+    },
+    "final": {
+      "anyOf": [
+        {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Final"
+    },
+    "first": {
+      "additionalProperties": {
+        "type": "number"
+      },
+      "title": "First",
+      "type": "object"
+    },
+    "metrics_missing": {
+      "default": false,
+      "title": "Metrics Missing",
+      "type": "boolean"
+    },
+    "parse_errors": {
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "title": "Parse Errors",
+      "type": "array"
+    },
+    "parser": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Parser"
+    },
+    "point_count": {
+      "default": 0,
+      "title": "Point Count",
+      "type": "integer"
+    },
+    "primary_metric": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Primary Metric"
+    },
+    "schema_version": {
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "series_ref": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Series Ref"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "title": "MetricSummary",
+  "type": "object",
+  "x-labbox-document": "metrics.json"
+}
