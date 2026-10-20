@@ -49,9 +49,28 @@ def _version_option(
         is_eager=True,
     ),
 ) -> None:
+    _configure_output_streams()
     if version:
         out.print(f"labbox {__version__}")
         raise typer.Exit()
+
+
+def _configure_output_streams() -> None:
+    """Make LabBox's own stdout/stderr UTF-8, even when the console is cp1252.
+
+    GitHub's ``windows-latest`` runner gives Python a cp1252 pipe. Chinese diagnostic text
+    then raises ``UnicodeEncodeError`` and the line is truncated mid-run-id (observed as a
+    failing ``doctor`` stale-run test). Training output is untouched: ``ProcessRunner``
+    forwards the child's bytes to ``sys.stdout.buffer``, not through this text layer.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is None:
+            continue
+        try:
+            reconfigure(encoding="utf-8", errors="replace")
+        except (OSError, ValueError):
+            pass
 
 
 def _handle_console_break_like_interrupt() -> None:
@@ -770,6 +789,7 @@ def _relative(root: Path, target: Path) -> str:
 
 
 def main() -> None:  # pragma: no cover - console_script entry point
+    _configure_output_streams()
     app()
 
 

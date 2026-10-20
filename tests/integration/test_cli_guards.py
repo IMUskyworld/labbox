@@ -69,6 +69,21 @@ def make_run(project: Path, name: str, *, config: str | None = None) -> Path:
     return run_dir
 
 
+def test_doctor_prints_chinese_on_a_non_utf8_console(project: Path) -> None:
+    """A cp1252 console must not truncate the stale-run line (§CI windows-latest)."""
+    run_dir = make_run(project, "stale")
+    record = json.loads((run_dir / "run.json").read_text(encoding="utf-8"))
+    record["status"] = "running"
+    (run_dir / "run.json").write_text(json.dumps(record, ensure_ascii=False), encoding="utf-8")
+
+    result = invoke("doctor", cwd=project, env={"PYTHONIOENCODING": "cp1252"})
+    stdout = result.stdout.decode("utf-8", "replace")
+    stderr = result.stderr.decode("utf-8", "replace")
+    assert result.returncode == 0, stderr
+    assert run_dir.name in stdout, stdout
+    assert "UnicodeEncodeError" not in stdout + stderr
+
+
 # ---------------------------------------------------------------------------
 # clean --older-than
 # ---------------------------------------------------------------------------
